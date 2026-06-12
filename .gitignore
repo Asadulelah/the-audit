@@ -1,0 +1,5 @@
+shots/
+.vercel/
+__pycache__/
+
+.vercel

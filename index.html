@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE AUDIT . a clinic for the thing you keep not doing</title>
+<meta name="description" content="A 15-minute examination that finds your pattern, your contradiction, and your avoided action. Then it hands you your own governing sentence. Built from your answers only.">
+<meta property="og:title" content="THE AUDIT">
+<meta property="og:description" content="a clinic for the thing you keep not doing. open from 3 AM. walk-ins only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-act="act0">
+
+  <!-- chart header -->
+  <header id="bar">
+    <div class="bar-left">
+      <span class="doorplate">RM 03</span>
+      <span class="bar-title">THE AUDIT</span>
+    </div>
+    <nav id="stepper" aria-label="examination progress"></nav>
+    <div class="bar-right">
+      <button id="t-sound" class="toggle" type="button" aria-pressed="false">SOUND OFF</button>
+      <button id="t-motion" class="toggle" type="button" aria-pressed="true">MOTION ON</button>
+    </div>
+  </header>
+
+  <main id="stage">
+
+    <!-- ACT 0 . ADMISSION -->
+    <section class="act paper on" id="act0" aria-label="admission">
+      <div class="sheet">
+        <div class="formcode">FORM 03-A · ADMISSION</div>
+        <h1 class="title-main">THE<br>AUDIT</h1>
+        <p class="tagline">a clinic for the thing you keep <span class="redword">not doing</span>.</p>
+        <p class="smallnote mono">open from 3 AM. walk-ins only. duration: about 15 minutes.<br>no account. nothing leaves this page.</p>
+        <div class="consent" id="consent"></div>
+        <button id="admit" class="bigbtn" type="button" disabled>BEGIN THE EXAMINATION</button>
+        <p class="whisper">the examiner is already seated.</p>
+      </div>
+    </section>
+
+    <!-- ACT 1 . INTAKE -->
+    <section class="act paper" id="act1" aria-label="intake">
+      <div class="sheet">
+        <div class="formcode">FORM 03-B · PATIENT INTAKE</div>
+        <div class="qhost" id="q-intake"></div>
+      </div>
+    </section>
+
+    <!-- ACT 2 . VITALS -->
+    <section class="act paper" id="act2" aria-label="vitals">
+      <div class="sheet">
+        <div class="formcode">FORM 03-C · VITALS · LAST 30 DAYS · NUMBERS ONLY</div>
+        <div class="qhost" id="q-vitals"></div>
+      </div>
+    </section>
+
+    <!-- ACT 3 . CROSS-EXAMINATION -->
+    <section class="act paper exam" id="act3" aria-label="cross-examination">
+      <div class="sheet">
+        <div class="formcode">FORM 03-D · CROSS-EXAMINATION · ANSWERS ARE QUOTED BACK</div>
+        <div class="qhost" id="q-exam"></div>
+      </div>
+    </section>
+
+    <!-- ACT 4 . IMAGING -->
+    <section class="act dark" id="act4" aria-label="imaging">
+      <div class="darkwrap">
+        <div class="formcode lit">IMAGING · THE LOOP · PATIENT: <span id="img-alias"></span></div>
+        <canvas id="loopcanvas" width="900" height="560" aria-label="diagram of the patient's loop"></canvas>
+        <p class="imaging-caption mono" id="img-caption"></p>
+        <button class="bigbtn lit" id="to-diagnosis" type="button">PROCEED TO DIAGNOSIS</button>
+      </div>
+    </section>
+
+    <!-- ACT 5 . DIAGNOSIS -->
+    <section class="act dark" id="act5" aria-label="diagnosis">
+      <div class="darkwrap center">
+        <div class="formcode lit" id="dx-code">DIAGNOSIS</div>
+        <p class="dx-lead mono" id="dx-lead"></p>
+        <h2 class="dx-sentence" id="dx-sentence"></h2>
+        <div class="dx-tail mono" id="dx-tail"></div>
+        <div class="dx-conds" id="dx-conds"></div>
+        <button class="bigbtn lit" id="to-chart" type="button" hidden>OPEN THE CHART</button>
+      </div>
+    </section>
+
+    <!-- ACT 6 . THE CHART -->
+    <section class="act paper" id="act6" aria-label="the chart">
+      <div class="sheet wide">
+        <div class="formcode">FORM 03-F · EXAMINATION RECORD · COPY RETAINED BY PATIENT</div>
+        <div id="chart"></div>
+        <div class="chart-actions">
+          <button class="bigbtn" id="dl-card" type="button">DOWNLOAD CHART CARD</button>
+          <button class="bigbtn ghostbtn" id="copy-report" type="button">COPY FULL REPORT</button>
+          <button class="bigbtn ghostbtn" id="restart" type="button">NEW EXAMINATION</button>
+        </div>
+        <p class="honesty mono">no AI judged you. the examiner is arithmetic and your own words.<br>the machine only refused to look away. nothing you typed left this page.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- the monitor: persistent ECG strip -->
+  <footer id="monitor">
+    <canvas id="ecg" aria-hidden="true"></canvas>
+    <div id="bpm" class="mono">-- BPM</div>
+  </footer>
+
+  <canvas id="cardcanvas" width="1080" height="1350" hidden></canvas>
+
+  <script src="js/data.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

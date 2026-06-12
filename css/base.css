@@ -1,0 +1,207 @@
+/* THE AUDIT . base design system
+   conceit: a clinic for the self, open at 3 AM.
+   materials: chart paper (bone), examiner's ink (blue-black),
+   imaging phosphor (x-ray blue), ONE alarm red. flat conviction, no glow. */
+
+:root {
+  --paper: #F2EDE2;
+  --paper-deep: #E9E2D2;
+  --ink: #161A1D;
+  --ink-soft: rgba(22, 26, 29, 0.62);
+  --ink-faint: rgba(22, 26, 29, 0.28);
+  --rule: rgba(22, 26, 29, 0.16);
+  --void: #0B0F12;
+  --void-2: #10161B;
+  --phosphor: #A9D7E8;
+  --phosphor-dim: rgba(169, 215, 232, 0.55);
+  --phosphor-faint: rgba(169, 215, 232, 0.18);
+  --red: #B5121B;
+  --disp: 'Oswald', sans-serif;
+  --body: 'Atkinson Hyperlegible', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --bar-h: 52px;
+  --mon-h: 88px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { overflow-x: clip; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  min-height: 100vh;
+  line-height: 1.55;
+}
+
+/* the room flips to the imaging suite on dark acts */
+body[data-act="act4"], body[data-act="act5"] { background: var(--void); }
+
+::selection { background: var(--ink); color: var(--paper); }
+body[data-act="act4"] ::selection, body[data-act="act5"] ::selection { background: var(--phosphor); color: var(--void); }
+
+/* ---------- header bar ---------- */
+#bar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--bar-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  z-index: 50;
+  transition: background .6s, border-color .6s;
+}
+body[data-act="act4"] #bar, body[data-act="act5"] #bar {
+  background: var(--void); border-color: var(--phosphor-faint);
+}
+.bar-left { display: flex; align-items: center; gap: 12px; }
+.doorplate {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  border: 1.5px solid var(--ink); padding: 3px 8px;
+  color: var(--ink);
+}
+.bar-title { font-family: var(--disp); font-weight: 600; font-size: 17px; letter-spacing: .22em; }
+body[data-act="act4"] .bar-title, body[data-act="act5"] .bar-title { color: var(--phosphor); }
+body[data-act="act4"] .doorplate, body[data-act="act5"] .doorplate { color: var(--phosphor); border-color: var(--phosphor-dim); }
+
+#stepper { display: flex; gap: 2px; }
+.step {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .08em;
+  padding: 4px 8px; color: var(--ink-faint);
+  border-bottom: 2px solid transparent;
+}
+.step.done { color: var(--ink-soft); }
+.step.done::after { content: " ✓"; }
+.step.now { color: var(--ink); border-bottom-color: var(--ink); }
+body[data-act="act4"] .step, body[data-act="act5"] .step { color: rgba(169,215,232,.3); }
+body[data-act="act4"] .step.done, body[data-act="act5"] .step.done { color: var(--phosphor-dim); }
+body[data-act="act4"] .step.now, body[data-act="act5"] .step.now { color: var(--phosphor); border-bottom-color: var(--phosphor); }
+
+.bar-right { display: flex; gap: 8px; }
+.toggle {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+  background: none; border: 1px solid var(--rule); color: var(--ink-soft);
+  padding: 5px 9px; cursor: pointer;
+}
+.toggle:hover { border-color: var(--ink); color: var(--ink); }
+body[data-act="act4"] .toggle, body[data-act="act5"] .toggle { color: var(--phosphor-dim); border-color: var(--phosphor-faint); }
+
+/* ---------- stage + acts ---------- */
+#stage { padding: calc(var(--bar-h) + 24px) 20px calc(var(--mon-h) + 40px); }
+.act { display: none; }
+.act.on { display: block; animation: actin .55s ease both; }
+@keyframes actin { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+html.reduced .act.on { animation: none; }
+
+/* paper sheet: the chart form */
+.sheet {
+  max-width: 760px; margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 44px 52px 56px 88px;
+  position: relative;
+  box-shadow: 0 1px 0 var(--rule), 4px 4px 0 rgba(22,26,29,0.06);
+}
+.sheet.wide { max-width: 880px; }
+/* punched chart-paper margin */
+.sheet::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 56px;
+  border-left: 1.5px solid rgba(181, 18, 27, 0.25);
+}
+.sheet::after {
+  content: ""; position: absolute; top: 28px; left: 22px; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  box-shadow: 0 64px 0 -1px var(--paper-deep), 0 64px 0 0 var(--rule),
+              0 128px 0 -1px var(--paper-deep), 0 128px 0 0 var(--rule);
+}
+
+.formcode {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 10px; margin-bottom: 34px;
+  text-transform: uppercase;
+}
+.formcode.lit { color: var(--phosphor-dim); border-color: var(--phosphor-faint); }
+
+.title-main {
+  font-family: var(--disp); font-weight: 700;
+  font-size: clamp(64px, 12vw, 124px);
+  line-height: .92; letter-spacing: .01em;
+}
+.tagline { font-size: 21px; margin-top: 18px; max-width: 32ch; }
+.redword { color: var(--red); font-style: italic; }
+.smallnote { margin-top: 16px; font-size: 11.5px; color: var(--ink-soft); line-height: 1.7; }
+.mono { font-family: var(--mono); }
+.whisper {
+  margin-top: 14px; text-align: right;
+  font-style: italic; font-size: 13px; color: var(--ink-soft);
+}
+
+/* ---------- dark acts ---------- */
+.darkwrap {
+  max-width: 920px; margin: 0 auto; color: var(--phosphor);
+  padding-top: 12px;
+}
+.darkwrap.center { text-align: left; max-width: 860px; }
+#loopcanvas { width: 100%; height: auto; display: block; margin-top: 8px; }
+.imaging-caption { font-size: 12px; color: var(--phosphor-dim); margin-top: 14px; letter-spacing: .04em; }
+
+.dx-lead { font-size: 12px; letter-spacing: .16em; color: var(--phosphor-dim); margin: 26px 0 18px; text-transform: uppercase; min-height: 18px; }
+.dx-sentence {
+  font-family: var(--disp); font-weight: 600;
+  font-size: clamp(30px, 5.4vw, 58px);
+  line-height: 1.08; color: #F4FAF8;
+  max-width: 18ch; min-height: 1.1em;
+}
+/* alarm red is brightened on the void: #B5121B reads as mud on dark */
+.dx-sentence .refuses { color: #E04A3A; }
+.darkwrap .stamp { border-color: #E04A3A; color: #E04A3A; }
+.dx-tail { margin-top: 26px; font-size: 13.5px; color: var(--phosphor-dim); line-height: 2; }
+.dx-conds { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ---------- buttons ---------- */
+.bigbtn {
+  display: inline-block; margin-top: 34px;
+  font-family: var(--disp); font-weight: 600; font-size: 15px; letter-spacing: .18em;
+  background: var(--ink); color: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 14px 26px; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.bigbtn:hover:not(:disabled) { background: var(--paper); color: var(--ink); }
+.bigbtn:disabled { opacity: .35; cursor: not-allowed; }
+.bigbtn.lit { background: var(--phosphor); color: var(--void); border-color: var(--phosphor); }
+.bigbtn.lit:hover { background: transparent; color: var(--phosphor); }
+.bigbtn.ghostbtn { background: transparent; color: var(--ink); }
+.bigbtn.ghostbtn:hover { background: var(--ink); color: var(--paper); }
+
+/* ---------- monitor (ECG strip) ---------- */
+#monitor {
+  position: fixed; left: 0; right: 0; bottom: 0; height: var(--mon-h);
+  background: var(--void);
+  border-top: 2px solid var(--ink);
+  z-index: 49;
+}
+#ecg { width: 100%; height: 100%; display: block; }
+#bpm {
+  position: absolute; right: 14px; top: 10px;
+  font-size: 11px; letter-spacing: .14em; color: var(--phosphor-dim);
+}
+#bpm.alarm { color: var(--red); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 720px) {
+  :root { --mon-h: 64px; }
+  #bar { padding: 0 10px; }
+  #stepper { display: none; }
+  .bar-title { font-size: 14px; letter-spacing: .14em; }
+  #stage { padding-left: 10px; padding-right: 10px; }
+  .sheet { padding: 30px 22px 40px 54px; }
+  .sheet::before { left: 34px; }
+  .sheet::after { left: 12px; }
+  .tagline { font-size: 17px; }
+  .chart-actions .bigbtn { width: 100%; text-align: center; margin-top: 12px; }
+}
+
+/* ---------- reduced motion ---------- */
+html.reduced * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
